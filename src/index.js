@@ -20,7 +20,6 @@ connect(process.env.MONGO_URI, {
   });
 
 // middlewares
-const staticPath = path.join(__dirname + "../public");
 app.use(express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
