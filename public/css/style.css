@@ -3,49 +3,72 @@ body {
   overflow-y: auto !important;
   background: rgb(252, 252, 252) !important;
 }
+
 .container {
   min-height: calc(100vh - 60px) !important;
 }
+
 .navlinks a {
   font-weight: 500;
   transition: color 0.2s ease;
   cursor: pointer;
 }
+
 .navlinks a:hover {
   color: #3b82f6;
 }
-
 .note {
   cursor: pointer;
   transition: box-shadow 0.3s ease;
   background-color: #feffff;
   flex: 1 1 330px;
 }
+
 .note header::first-letter,
 .note article::first-letter {
   text-transform: uppercase;
 }
+
 .note:hover {
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
 }
+
 nav {
   box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.1) !important;
+  position: sticky;
+  top: 0;
+  left: 0;
+  /* width: 100%; */
 }
+
 .master textarea {
   max-height: 50vh !important;
   resize: none !important;
 }
+
 textarea::-webkit-scrollbar {
   display: none !important;
 }
+
 .links a {
   color: white !important;
   padding: 8px 15px !important;
   border-radius: 4px !important;
   cursor: pointer;
 }
+
 .add-note,
 .modify-note {
   background: rgba(0, 0, 0, 0.4);
-  transition: transform 0.6s ease-in-out;
+  animation-name: animate;
+}
+
+@keyframes animate {
+  0%{
+    transition: all 5s ease;
+  }
+  100%{
+    transition: all 15s ease;
+  }
+
 }

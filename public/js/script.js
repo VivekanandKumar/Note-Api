@@ -1,5 +1,5 @@
 const notyf = new Notyf({
-  position: { x: "right", y: "top" },
+  position: { x: "right", y: "bottom" },
   duration: 2500,
 });
 let limit = 10;
@@ -30,10 +30,10 @@ $(document).ready(function () {
 
   $(".notes").on("click", ".note", function () {
     noteId = $(this).attr("id");
-    const title = $(this).children("header").text();
-    const description = $(this).children("article").text();
-    $(".modify-note input").val($.trim(title));
-    $(".modify-note textarea").val($.trim(description));
+    const title = $.trim($(this).children("header").text());
+    const description = $.trim($(this).children("article").text());
+    $(".modify-note input").val(title);
+    $(".modify-note textarea").val(description);
     $(".modify-note").toggleClass("hidden");
   });
   $(".new-note").click(function () {
@@ -86,7 +86,6 @@ function signup(data) {
     data: data,
   })
     .then((response) => {
-      console.log(response.message);
       if (response.redirect) {
         return window.open(response.redirect, "_self");
       }

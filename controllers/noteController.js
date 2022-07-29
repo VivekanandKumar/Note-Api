@@ -33,7 +33,7 @@ const updateNote = async (req, res) => {
     title,
     description,
     userId: req.UserId,
-    updatedOn : Date.now()
+    updatedOn : Date.now(),
   };
   try {
     await Notes.findByIdAndUpdate(noteId, modifiedNote, { new: true });
