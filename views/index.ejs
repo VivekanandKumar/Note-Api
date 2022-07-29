@@ -1,0 +1,45 @@
+<%- include('partials/header') %>
+
+    <div
+        class="add-note hidden fixed overflow-hidden top-0 left-0 w-full h-full flex justify-center items-center">
+        <div class="master rounded-md bg-white p-6 flex flex-col w-full mx-10 lg:w-1/2 h-72 md:w-1/2 sm:w-full">
+            <input placeholder="Title" class="font-bold text-2xl border-0 outline-0" type="text" />
+            <textarea placeholder="Description" class="h-full text-sm border-0 outline-0 mt-4 overflow-auto"></textarea>
+            <div class="links flex justify-between items-center mt-4 ">
+                <div class="left">
+                    <a class="close bg-yellow-300">Close</a>
+                </div>
+                <div class="save">
+                    <a class="add ml-4 bg-green-500">Save</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div
+        class="modify-note hidden fixed overflow-hidden top-0 left-0 w-full h-full flex justify-center items-center">
+        <div class="master rounded-md bg-white p-6 flex flex-col w-full mx-10 lg:w-1/2 h-72 md:w-1/2 sm:w-full">
+            <input placeholder="Title" class="font-bold text-2xl border-0 outline-0" type="text" />
+            <textarea placeholder="Description" class="h-full text-sm border-0 outline-0 mt-4 overflow-auto"></textarea>
+            <div class="links flex justify-between items-center mt-4 ">
+                <div class="left">
+                    <a class="close bg-yellow-300">Close</a>
+                </div>
+                <div class="right">
+                    <a class="edit-btn mr-4 bg-sky-500">Edit</a>
+                    <a class="delete-btn bg-rose-500">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container mx-auto p-6">
+        <div class="notes flex flex-wrap gap-x-5 gap-y-3">
+        </div>
+    </div>
+    <script>$(document).ready(function () {
+            display(10);
+        })</script>
+    <%- include('partials/footer') %>

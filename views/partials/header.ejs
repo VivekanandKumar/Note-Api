@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/images/note.png">
+    <title>
+        <%= title %>
+    </title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/js/jquery.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+</head>
+
+<body>
+    <nav class="flex justify-between items-center px-6 py-3 bg-white">
+        <div class="flex justify-between items-center">
+            <img class="w-12" src="/images/note.png" alt="Homepage">
+            <a href="/" class="text-2xl font-bold">Keeper</a>
+        </div>
+        <div class="navlinks flex gap-x-5 text-base">
+            <% if(token){ %>
+                <a class="new-note">New Note</a>
+                <a href="/user/logout">Log Out</a>
+                <% }else{ %>
+                    <a href="/user/login">Login</a>
+                    <a href="/user/register">Sign up</a>
+
+                    <% } %>
+        </div>
+    </nav>
