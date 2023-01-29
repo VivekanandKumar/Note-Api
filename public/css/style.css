@@ -5,9 +5,12 @@ body {
 }
 
 .container {
-  min-height: calc(100vh - 60px) !important;
+  overflow: auto;
+  height: calc(100vh - 72px);
 }
-
+.container::-webkit-scrollbar{
+  display: none;
+}
 .navlinks a {
   font-weight: 500;
   transition: color 0.2s ease;
@@ -17,6 +20,7 @@ body {
 .navlinks a:hover {
   color: #3b82f6;
 }
+
 .note {
   cursor: pointer;
   transition: box-shadow 0.3s ease;
@@ -64,10 +68,11 @@ textarea::-webkit-scrollbar {
 }
 
 @keyframes animate {
-  0%{
+  0% {
     transition: all 5s ease;
   }
-  100%{
+
+  100% {
     transition: all 15s ease;
   }
 

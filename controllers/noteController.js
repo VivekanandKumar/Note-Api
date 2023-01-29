@@ -16,10 +16,8 @@ const newNote = async (req, res) => {
 };
 const getNotes = async (req, res) => {
   try {
-    let limits = req.params.limit;
-    const notes = await Notes.find({ userId: req.userId })
-      .sort({ updatedOn : -1 })
-      .limit(Number(limits));
+    const { skip, fetch } = req.body;
+    const notes = await Notes.find({ userId: req.userId }).sort({ updatedOn: -1 }).skip(skip).limit(fetch);
     return res.status(200).json(notes);
   } catch (err) {
     console.log(err);
@@ -33,7 +31,7 @@ const updateNote = async (req, res) => {
     title,
     description,
     userId: req.UserId,
-    updatedOn : Date.now(),
+    updatedOn: Date.now(),
   };
   try {
     await Notes.findByIdAndUpdate(noteId, modifiedNote, { new: true });
@@ -60,4 +58,7 @@ const viewNote = (req, res) => {
   }
   return res.render("index", { title: "Homepage", token });
 };
+
+
+
 module.exports = { newNote, getNotes, updateNote, deleteNote, viewNote };

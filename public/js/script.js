@@ -2,7 +2,8 @@ const notyf = new Notyf({
   position: { x: "right", y: "bottom" },
   duration: 2500,
 });
-let limit = 10;
+skip = 0;
+let isOperate = 0;
 $(document).ready(function () {
   let noteId = "";
   $("#signup-btn").click(function () {
@@ -70,12 +71,6 @@ $(document).ready(function () {
     $(".add-note input").val("");
     $(".add-note textarea").val("");
   });
-  $(document).scroll(() => {
-    if ($(window).scrollTop() >= $(document).height() - $(window).height()) {
-      limit += 6;
-      display(limit);
-    }
-  });
 });
 
 function signup(data) {
@@ -116,6 +111,8 @@ function login(data) {
 }
 
 function editNote(id, data) {
+  isOperate = 1;
+  skip = 0;
   $.ajax({
     type: "PATCH",
     url: `/${id}`,
@@ -123,7 +120,7 @@ function editNote(id, data) {
     data: data,
   })
     .then((response) => {
-      display(10);
+      display();
       $(".modify-note").toggleClass("hidden");
       return notyf.success(response.message);
     })
@@ -133,12 +130,15 @@ function editNote(id, data) {
 }
 
 function deleteNote(id) {
+  isOperate = 1;
+  skip = 0;
   $.ajax({
     url: `/${id}`,
     type: "DELETE",
   })
     .then((response) => {
-      display(10);
+      // $(".notes").empty();
+      display();
       $(".modify-note").toggleClass("hidden");
       return notyf.success(response.message);
     })
@@ -148,6 +148,8 @@ function deleteNote(id) {
 }
 
 function newNote(data) {
+  isOperate = 1;
+  skip = 0;
   $.ajax({
     url: "/",
     type: "POST",
@@ -155,7 +157,7 @@ function newNote(data) {
     data,
   })
     .then((response) => {
-      display(10);
+      display();
       $(".add-note").toggleClass("hidden");
       return notyf.success(response.message);
     })
@@ -163,36 +165,39 @@ function newNote(data) {
       return console.log(error);
     });
 }
-function display(lim) {
-  var limit = lim.toString();
+function display() {
+  let objParams = {};
+  objParams.skip = skip;
+  objParams.fetch = fetchRecord;
+  objParams.functionName = 'display';
+  localStorage.setItem('objParamsList', JSON.stringify(objParams));
   $.ajax({
-    url: `/notes/${limit}`,
-    type: "GET",
+    url: `/notes`,
+    type: "POST",
+    data: objParams
   })
     .then((notes) => {
-      $(".notes").empty();
+      let html = '';
+      skip = skip + notes.length;
       notes.forEach((note) => {
         const date = moment(note.updatedOn).format("DD MMMM, YYYY");
         const time = moment(note.updatedOn).format("hh:mm A");
-        $(".notes").append(
-          `<div id=${note._id} class="note shadow-md rounded-md border p-3">
-    <header class="font-semibold text-xl mb-1">
-        ${note.title}
-    </header>
-    <article class="text-sm py-2 overflow-hidden h-16">
-        ${note.description}
-    </article>
-    <footer class="mt-4 flex justify-between items-center text-sm font-medium">
-        <div class="">
-          ${date}
-        </div>
-        <div class="">
-          ${time}
-        </div>
-    </footer>
-</div>`
-        );
+        html += `<div id=${note._id} class="note shadow-md rounded-md border p-3">
+                      <header class="font-semibold text-xl mb-1">${note.title}</header>
+                      <article class="text-sm py-2 overflow-hidden h-16">${note.description}</article>
+                      <footer class="mt-4 flex justify-between items-center text-sm font-medium">
+                        <div class="">${date}</div>
+                        <div class="">${time}</div>
+                      </footer>
+                    </div>`
       });
+      scrollCached = 0;
+      if (isOperate) {
+        isOperate = 0;
+        return $(".notes").html(html);
+      }
+      $(".notes").append(html);
+      isOperate = 0;
     })
     .catch((err) => {
       console.log(err);
