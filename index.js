@@ -3,8 +3,8 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const { connect } = require("mongoose");
-const userRoute = require("../routes/userRouter");
-const noteRoute = require("../routes/noteRouter");
+const userRoute = require("./routes/userRouter");
+const noteRoute = require('./routes/noteRouter')
 const app = express();
 
 // Database Connection

@@ -6,6 +6,40 @@ skip = 0;
 let isOperate = 0;
 $(document).ready(function () {
   let noteId = "";
+
+  $('#send-email').click(function () {
+    const email = $.trim($('#forgotemail').val());
+    if (!email) {
+      return notyf.error("Email is required");
+    }
+    if (!validateEmail(email)) {
+      return notyf.error("Valid Email is required");
+    }
+    $('#send-email').attr('disabled', true);
+    return sendForgotPasswordEmail(email);
+  })
+
+  $('#verifyCode').click(function () {
+    let isValid = true;
+    const objParams = {};
+    const code = $.trim($('#otpcode').val());
+    if (code) {
+      objParams.code = code;
+    } else {
+      isValid = false;
+    }
+
+    const password = $.trim($('#newpassword').val());
+    if (password) {
+      objParams.password = password;
+    } else {
+      isValid = false;
+    }
+    if (!isValid) return notyf('All Fields are required');
+    verifyOtpCode(objParams);
+  })
+
+
   $("#signup-btn").click(function () {
     const name = $.trim($("#name").val());
     const email = $.trim($("#email").val());
@@ -147,6 +181,25 @@ function deleteNote(id) {
     });
 }
 
+function verifyOtpCode(objParams) {
+  $.ajax({
+    url: '/user/setNewPassword',
+    type: 'POST',
+    data: objParams
+  }).done((response) => {
+    if (response.status === 0) {
+      return window.location.href = '/user/login';
+    } else {
+      return notyf.error(response.msg);
+    }
+  }).fail((error) => {
+    error = error.responseJSON;
+    if (error.msg) {
+      return notyf.error(error.msg);
+    }
+  })
+}
+
 function newNote(data) {
   isOperate = 1;
   skip = 0;
@@ -202,4 +255,35 @@ function display() {
     .catch((err) => {
       console.log(err);
     });
+}
+
+
+const validateEmail = (email) => {
+  return String(email)
+    .toLowerCase()
+    .match(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
+};
+
+function sendForgotPasswordEmail(email) {
+  $.ajax({
+    url: '/user/sendForgotEmail',
+    type: 'POST',
+    data: { email }
+  }).done((response) => {
+    $('#send-email').attr('disabled', false);
+    if (response.status === 0) {
+      $('#forgotemail').attr('disabled', true);
+      $('#send-email').hide();
+      $('.codeverify').fadeIn();
+      return notyf.success(response?.msg || 'OTP Sent Successfully!');
+    } else {
+      return notyf.error('Something Went Wrong!');
+    }
+  }).fail((error) => {
+    $('#send-email').attr('disabled', false);
+    error = error.responseJSON;
+    return notyf.error(error.msg);
+  })
 }
